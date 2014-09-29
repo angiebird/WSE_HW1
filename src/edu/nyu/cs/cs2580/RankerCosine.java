@@ -14,6 +14,7 @@ public class RankerCosine extends Ranker {
 	@Override
 	public Vector<ScoredDocument> runQuery(String query) {
 		// TODO Auto-generated method stub
+		//test
 		return null;
 	}
 
