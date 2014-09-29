@@ -19,14 +19,15 @@ public class SearchEngine {
       return;
     }
     int port = Integer.parseInt(args[0]);
-    String index_path = args[1];
+    String index_path = args[1]; // path of corpus
     InetSocketAddress addr = new InetSocketAddress(port);
     HttpServer server = HttpServer.create(addr, -1);
-
-    Ranker ranker = new Ranker(index_path);
+    Index indexer = new Index(index_path);
+    QueryHandler handler = new QueryHandler(indexer);
+    //Ranker ranker = new Ranker(index_path);
     
     // Attach specific paths to their handlers.
-    server.createContext("/", new QueryHandler(ranker));
+    server.createContext("/",handler);
     server.setExecutor(Executors.newCachedThreadPool());
     server.start();
     System.out.println("Listening on port: " + Integer.toString(port));

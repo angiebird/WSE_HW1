@@ -3,7 +3,7 @@ package edu.nyu.cs.cs2580;
 import java.util.Vector;
 import java.util.Scanner;
 
-class Ranker {
+/*class Ranker {
   private Index _index;
 
   public Ranker(String index_source){
@@ -47,4 +47,57 @@ class Ranker {
 
     return new ScoredDocument(did, d.get_title_string(), score);
   }
+}*/
+
+
+public abstract class Ranker{
+
+	// The indexer via which the document are retrieved
+	protected Index _index;
+
+
+
+	/**
+	 *  
+	 * Constructor : the construction of the Ranker 
+	 * @param index_source
+	 */
+	protected Ranker(Index indexer){
+		_index = indexer;
+	}
+
+	/**
+	 * Process one query
+	 * @param query the query passed by user
+	 * @return Scored documents in decreasing order
+	 */
+	public abstract Vector<ScoredDocument> runQuery(String query);
+
+	/**
+	 * A Factory class that will return the Ranker object according to the parameter
+	 * @author bdawada
+	 *
+	 */
+	public static class Factory{
+		public static Ranker getRankerByParameter(RankerType rankerType, Index indexer) {
+			switch(rankerType){
+			case COSINE:
+				return new RankerCosine(indexer);
+			case QL:
+				// Plug in your QL Ranker
+				break;
+			case PHRASE:
+				// Plug in your phrase Ranker
+				break;
+			case LINEAR:
+				// Plug in your linear Ranker
+				break;
+			case NONE:
+				return new RankerSimple(indexer);
+			default:
+				// Do nothing.
+			}
+			return null;
+		}
+	}
 }
