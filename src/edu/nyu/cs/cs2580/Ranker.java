@@ -86,7 +86,6 @@ public abstract class Ranker{
 			case QL:
 				// Plug in your QL Ranker
 				return new RankerQL(indexer);
-				break;
 			case PHRASE:
 				// Plug in your phrase Ranker
 				break;
