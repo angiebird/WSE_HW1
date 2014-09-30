@@ -68,7 +68,7 @@ class QueryHandler implements HttpHandler {
 						} else if (ranker_type.equals("QL")){
 							_ranker = Ranker.Factory.getRankerByParameter(RankerType.QL, _indexer);
 						} else if (ranker_type.equals("phrase")){
-							queryResponse = (ranker_type + " not implemented.");
+							_ranker = Ranker.Factory.getRankerByParameter(RankerType.PHRASE, _indexer);
 						} else if (ranker_type.equals("linear")){
 							queryResponse = (ranker_type + " not implemented.");
 						} else {

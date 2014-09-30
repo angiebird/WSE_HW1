@@ -12,7 +12,7 @@ public class RankerCosine extends Ranker {
 	
 	//TODO: Add the specific run query implementation in class
 	@Override
-	public Vector<ScoredDocument> runQuery(String query) {
+	public ScoredDocument runquery(String query, int did){
 		// TODO Auto-generated method stub
 		//test
 		return null;

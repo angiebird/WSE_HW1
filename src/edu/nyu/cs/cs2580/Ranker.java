@@ -2,6 +2,7 @@ package edu.nyu.cs.cs2580;
 
 import java.util.Vector;
 import java.util.Scanner;
+import java.util.Collections;
 
 /*class Ranker {
   private Index _index;
@@ -71,8 +72,16 @@ public abstract class Ranker{
 	 * @param query the query passed by user
 	 * @return Scored documents in decreasing order
 	 */
-	public abstract Vector<ScoredDocument> runQuery(String query);
+	public Vector<ScoredDocument> runQuery(String query) {
+		Vector < ScoredDocument > retrieval_results = new Vector < ScoredDocument > ();
+		for (int i = 0; i < _index.numDocs(); ++i){
+			retrieval_results.add(runquery(query, i));
+		}
+        Collections.sort(retrieval_results);
+		return retrieval_results;
+	}
 
+	public abstract  ScoredDocument runquery(String query, int did);
 	/**
 	 * A Factory class that will return the Ranker object according to the parameter
 	 * @author bdawada
@@ -84,11 +93,9 @@ public abstract class Ranker{
 			case COSINE:
 				return new RankerCosine(indexer);
 			case QL:
-				// Plug in your QL Ranker
 				return new RankerQL(indexer);
 			case PHRASE:
-				// Plug in your phrase Ranker
-				break;
+				return new RankerPhrase(indexer);
 			case LINEAR:
 				// Plug in your linear Ranker
 				break;
