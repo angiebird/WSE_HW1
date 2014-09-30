@@ -117,9 +117,11 @@ class QueryHandler implements HttpHandler {
 		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
 		while(itr.hasNext()){
 			ScoredDocument sd = itr.next();
+            /*
 			if (queryResponse.length() > 0){
 				queryResponse = queryResponse + "\n";
 			}
+            */
 			queryResponse = queryResponse + query + "\t" + sd.asString();
 			if (queryResponse.length() > 0){
 				queryResponse = queryResponse + "\n";

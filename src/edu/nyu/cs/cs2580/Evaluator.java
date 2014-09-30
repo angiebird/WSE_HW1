@@ -6,10 +6,12 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.util.Vector;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.ArrayList;
 
-class Evaluator {
+public abstract class Evaluator {
 
   public static void main(String[] args) throws IOException {
     HashMap < String , HashMap < Integer , Double > > relevance_judgments =
@@ -39,10 +41,20 @@ class Evaluator {
           String grade = s.next();
           double rel = 0.0;
           // convert to binary relevance
-          if ((grade.equals("Perfect")) ||
-            (grade.equals("Excellent")) ||
-            (grade.equals("Good"))){
+          if (grade.equals("Perfect")){
+            rel = 10.0;
+          }
+          else if(grade.equals("Excellent")){
+            rel = 7.0;
+          }
+          else if(grade.equals("Good")){
+            rel = 5.0;
+          }
+          else if(grade.equals("Fair")){
             rel = 1.0;
+          }
+          else if(grade.equals("Bad")){
+            rel = 0.0;
           }
           if (relevance_judgments.containsKey(query) == false){
             HashMap < Integer , Double > qr = new HashMap < Integer , Double >();
@@ -59,15 +71,57 @@ class Evaluator {
     }
   }
 
+  public abstract double evaluate( String query,
+    HashMap < Integer , Double > query_revelance,
+    ArrayList<ScoredDocument > query_rank);
+
   public static void evaluateStdin(
     HashMap < String , HashMap < Integer , Double > > relevance_judgments){
+    HashMap< String, ArrayList <ScoredDocument> > rank_result = readStdin(relevance_judgments);
+
+    String query = new String();
+
+    for (Map.Entry<String, ArrayList <ScoredDocument>> entry : rank_result.entrySet()) {
+        query = entry.getKey();
+        // break here since the stdin only have one query
+        break;
+    }
+    
+    HashMap < Integer , Double > query_revelance = relevance_judgments.get(query);
+    ArrayList< ScoredDocument > query_rank = rank_result.get(query);
+
+    // Add your evaluator here
+    ArrayList< Double > score = new ArrayList<Double>();
+    Evaluator eval = new EvaluatorAvgPrecision();
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+    /*
+    For example:
+    
+    eval = new EvaluatorPrecision(1);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+    
+    eval = new EvaluatorPrecision(5);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+    
+    eval = new EvaluatorPrecision(10);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorRecall(1);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    ...
+    */
+  }
+
+  // parsing the stdin to a HashMap
+  public static HashMap< String, ArrayList< ScoredDocument > > readStdin(
+    HashMap < String , HashMap < Integer , Double > > relevance_judgments){
+    HashMap< String, ArrayList< ScoredDocument > > rank_result = new HashMap< String, ArrayList < ScoredDocument > >();
     // only consider one query per call    
     try {
       BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
       
       String line = null;
-      double RR = 0.0;
-      double N = 0.0;
       while ((line = reader.readLine()) != null){
         Scanner s = new Scanner(line).useDelimiter("\t");
         String query = s.next();
@@ -77,15 +131,15 @@ class Evaluator {
       	if (relevance_judgments.containsKey(query) == false){
       	  throw new IOException("query not found");
       	}
-      	HashMap < Integer , Double > qr = relevance_judgments.get(query);
-      	if (qr.containsKey(did) != false){
-      	  RR += qr.get(did);					
-      	}
-      	++N;
+        if(!rank_result.containsKey(query)){
+            rank_result.put(query, new ArrayList<ScoredDocument>());
+        }
+        rank_result.get(query).add(new ScoredDocument(did, title, rel));
       }
-      System.out.println(Double.toString(RR/N));
     } catch (Exception e){
       System.err.println("Error:" + e.getMessage());
     }
+    return rank_result;
   }
 }
+
