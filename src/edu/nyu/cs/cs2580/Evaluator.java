@@ -94,6 +94,15 @@ public abstract class Evaluator {
     ArrayList< Double > score = new ArrayList<Double>();
     Evaluator eval = new EvaluatorAvgPrecision();
     score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorNDCG(1);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorNDCG(5);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorNDCG(10);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
     /*
     For example:
     
@@ -112,7 +121,7 @@ public abstract class Evaluator {
     ...
     */
     for(int i = 0; i < score.size(); i++){
-        if(i==0)
+        if(i!=0)
             System.out.print(" " + score.get(i));
         else
             System.out.print(score.get(i));
