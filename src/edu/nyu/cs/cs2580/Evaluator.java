@@ -111,6 +111,13 @@ public abstract class Evaluator {
 
     ...
     */
+    for(int i = 0; i < score.size(); i++){
+        if(i==0)
+            System.out.print(" " + score.get(i));
+        else
+            System.out.print(score.get(i));
+    }
+    System.out.print("\n");
   }
 
   // parsing the stdin to a HashMap
