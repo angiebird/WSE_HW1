@@ -19,7 +19,7 @@ public class RankerLinear extends Ranker {
 	public ScoredDocument runquery(String query, int did){
 		// you will be implementing score fuctions here - Q1 
 		// Build query vector
-		Scanner s = new Scanner(query);
+		/*Scanner s = new Scanner(query);
 		Vector < String > qv = new Vector < String > ();
 		while (s.hasNext()){
 			String term = s.next();
@@ -46,8 +46,8 @@ public class RankerLinear extends Ranker {
 			score += (betaNumViews * sd._score);
 			System.out.print(" Numviews score" + (betaNumViews * sd._score));
 			return new ScoredDocument(i, sd._title, score);
-		}
-
+		}*/
+  return null;
 		
 	}
 

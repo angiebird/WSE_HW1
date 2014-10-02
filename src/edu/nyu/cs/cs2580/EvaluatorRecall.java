@@ -7,17 +7,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class EvaluatorRecall extends Evaluator{
-    privat int K;
-    public EvaluatorNDCG(int K) {
+    private int K;
+    public EvaluatorRecall(int K) {
         super();
         this.K = K;
     }
-
+    
+    // TODO: where is 
     @Override
     public double evaluate( String query,
         HashMap < Integer , Double > query_relevance,
         ArrayList<ScoredDocument > query_rank){
-
+    	
+    	// Make sure this is iterating over the correct list
+    	Iterator<ScoredDocument> it = query_rank.iterator();
         double recall = 0.0;
         double RR = 0.0;
         double R = 0.0;
@@ -25,10 +28,10 @@ public class EvaluatorRecall extends Evaluator{
         while(it.hasNext()){
             i++;
             ScoredDocument doc = it.next();
-            if(query_revelance.containsKey(doc._did) && i < K)
+            if(query_relevance.containsKey(doc._did) && i < K)
                 RR ++;
             
-            if(query_revelance.containsKey(doc._did))
+            if(query_relevance.containsKey(doc._did))
                 R ++;
         }
         
