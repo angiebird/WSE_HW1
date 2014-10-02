@@ -16,26 +16,12 @@ public class RankerCosine extends Ranker {
 		// TODO Auto-generated constructor stub
 	}
 
-
-	//TODO: Add the specific run query implementation in class
-	@Override
-	public Vector<ScoredDocument> runQuery(String query) {
-		// TODO Auto-generated method stub
-		System.out.println("run_query");
-		Vector < ScoredDocument > retrieval_results = new Vector < ScoredDocument > ();
-		for (int i = 0; i < _index.numDocs(); ++i){
-			retrieval_results.add(runquery(query, i));
-		}
-		System.out.println("length of retrival result is" + retrieval_results.size());
-		return retrieval_results;
-	}
-
 	public ScoredDocument runquery(String query, int did){
 		double score = 0.0;
 		int dotProduct = 0;
 	    int normA = 0;
 	    int normB = 0;
-		int noOfDocuments = 659;
+		int noOfDocuments = _index.numDocs();
 		Scanner s = new Scanner(query);
 		Vector < String > qv = new Vector < String > ();
 		Map<String,Integer> queryMap = new HashMap<String,Integer>();
@@ -82,12 +68,11 @@ public class RankerCosine extends Ranker {
 		}
 		// to calculate score by cosine similiarity
 			for (String key: documentMap.keySet()){
+			    normA += Math.pow(documentMap.get(key), 2);
 				if(queryMap.containsKey(key)){
 					dotProduct += documentMap.get(key) * queryMap.get(key);
-					normA += Math.pow(documentMap.get(key), 2);
 					normB += Math.pow(queryMap.get(key), 2);
 				}
-							    
 			}
 			if((Math.sqrt(normA) * Math.sqrt(normB)) > 1)
 				score = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
