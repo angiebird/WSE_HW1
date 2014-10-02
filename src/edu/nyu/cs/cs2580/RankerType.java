@@ -7,4 +7,5 @@ public enum RankerType {
 	  PHRASE,
 	  QL,
 	  LINEAR,
+	  NUMVIEWS,
 }

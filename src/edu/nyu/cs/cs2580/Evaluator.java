@@ -103,6 +103,24 @@ public abstract class Evaluator {
 
     eval = new EvaluatorNDCG(10);
     score.add(eval.evaluate(query, query_revelance, query_rank));
+    
+    eval = new EvaluatorPrecision(1);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+    
+    eval = new EvaluatorPrecision(5);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+    
+    eval = new EvaluatorPrecision(10);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorRecall(1);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorRecall(5);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorRecall(10);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
     /*
     For example:
     

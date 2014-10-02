@@ -97,8 +97,9 @@ public abstract class Ranker{
 			case PHRASE:
 				return new RankerPhrase(indexer);
 			case LINEAR:
-				// Plug in your linear Ranker
-				break;
+				return new RankerLinear(indexer);
+			case NUMVIEWS:
+				return new RankerNumviews(indexer);
 			case NONE:
 				return new RankerSimple(indexer);
 			default:
