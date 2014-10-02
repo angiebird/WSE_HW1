@@ -6,8 +6,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class EvaluatorNDCG extends Evaluator{
-    private int K;
+public class EvaluatorPrecision extends Evaluator{
+    privat int K;
     public EvaluatorNDCG(int K) {
         super();
         this.K = K;
@@ -18,14 +18,19 @@ public class EvaluatorNDCG extends Evaluator{
         HashMap < Integer , Double > query_relevance,
         ArrayList<ScoredDocument > query_rank){
 
-        double DCG = 0;
-        for(int i = 1; i <= K; i++){
-            ScoredDocument doc = query_rank.get(i);
-            if(query_relevance.containsKey(doc._did)){
-                double rel = query_relevance.get(doc._did);
-                DCG += rel/(Math.log(i+1)/Math.log(2));
+        double precision = 0.0;
+        double RR = 0.0;
+        while(it.hasNext()){
+            ScoredDocument doc = it.next();
+            if(query_revelance.containsKey(doc._did)){
+                RR ++;
             }
         }
-        return DCG;
+        
+        if (K != 0)
+            precision = RR / K;
+        else
+            precision = 1.0;
+        return precision;
     }
 }
