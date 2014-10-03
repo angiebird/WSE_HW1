@@ -12,9 +12,10 @@ public class EvaluatorFMeasure extends Evaluator{
 	}
 	@Override
 	public double evaluate(String query,
-			HashMap<Integer, Double> query_revelance,
+			HashMap<Integer, Double> query_relevance,
 			ArrayList<ScoredDocument> query_rank) {
-		// TODO Auto-generated method stub
+		double P = new EvaluatorPrecision(K).evaluate(query, query_relevance, query_rank);
+		
 		return 0;
 	}
 
