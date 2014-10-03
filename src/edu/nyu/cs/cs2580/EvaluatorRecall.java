@@ -16,12 +16,12 @@ public class EvaluatorRecall extends Evaluator{
     // TODO: where is 
     @Override
     public double evaluate( String query,
-        HashMap < Integer , Double > query_relevance,
-        ArrayList<ScoredDocument > query_rank){
+        HashMap < Integer , Double > query_relevance, // r
+        ArrayList<ScoredDocument > query_rank){ // my ranking
     	
     	// Make sure this is iterating over the correct list
     	Iterator<ScoredDocument> it = query_rank.iterator();
-        double recall = 0.0;
+        double recall = 0.0; 
         double RR = 0.0;
         double R = 0.0;
        
@@ -39,3 +39,20 @@ public class EvaluatorRecall extends Evaluator{
         return recall;
     }
 }
+
+/*
+ double recall = 0.0; 
+        double RR = 0.0;
+        double R = 0.0;
+        
+        for(int i = 0; i < K ; i++){
+        ScoredDocument doc = query_rank.get(i);
+        if(query_relevance.containsKeys(doc._did){
+          RR = RR + 1;
+        }
+        }
+        
+        R = count all relevance documents in query_relevance
+        
+        return RR/R;
+ */

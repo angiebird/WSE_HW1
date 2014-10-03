@@ -16,6 +16,7 @@ public class RankerCosine extends Ranker {
 		// TODO Auto-generated constructor stub
 	}
 
+
 	public ScoredDocument runquery(String query, int did){
 		double score = 0.0;
 		int dotProduct = 0;
