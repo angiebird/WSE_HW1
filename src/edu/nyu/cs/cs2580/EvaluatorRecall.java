@@ -24,17 +24,17 @@ public class EvaluatorRecall extends Evaluator{
         double recall = 0.0;
         double RR = 0.0;
         double R = 0.0;
-        int i = 0;
-        while(it.hasNext()){
-            i++;
-            ScoredDocument doc = it.next();
-            if(query_relevance.containsKey(doc._did) && i < K)
-                RR ++;
-            
-            if(query_relevance.containsKey(doc._did))
-                R ++;
+       
+        for(int i = 0; i <= K; i++){
+            ScoredDocument doc = query_rank.get(i);
+            if(query_relevance.containsKey(doc._did)){
+                double rel = query_relevance.get(doc._did);
+                if (rel >= 5.0 && i < k){
+                    RR++;
+                }
+                if(rel >= 5.0) R++;
+            }
         }
-        
         recall = RR / R;
         return recall;
     }
