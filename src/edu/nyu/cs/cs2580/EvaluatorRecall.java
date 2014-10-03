@@ -29,7 +29,7 @@ public class EvaluatorRecall extends Evaluator{
             ScoredDocument doc = query_rank.get(i);
             if(query_relevance.containsKey(doc._did)){
                 double rel = query_relevance.get(doc._did);
-                if (rel >= 5.0 && i < k){
+                if (rel >= 5.0 && i < K){
                     RR++;
                 }
                 if(rel >= 5.0) R++;
