@@ -18,12 +18,10 @@ public class EvaluatorPrecision extends Evaluator{
         HashMap < Integer , Double > query_relevance,
         ArrayList<ScoredDocument > query_rank){
     	
-    	// Iteratte only over the query_rank till K
-    	Iterator<ScoredDocument> it = query_rank.iterator();
         double precision = 0.0;
         double RR = 0.0;
-        while(it.hasNext()){
-            ScoredDocument doc = it.next();
+        for(int i = 0; i <= K; i++){
+            ScoredDocument doc = query_rank.get(i);
             if(query_relevance.containsKey(doc._did)){
                 RR ++;
             }
