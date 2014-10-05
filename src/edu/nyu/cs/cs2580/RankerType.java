@@ -1,4 +1,4 @@
-package edu.nyu.cs.cs2580;
+	package edu.nyu.cs.cs2580;
 
 // The type of Rankers that will be used
 public enum RankerType {

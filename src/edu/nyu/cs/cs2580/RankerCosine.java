@@ -38,10 +38,10 @@ public class RankerCosine extends Ranker {
 		Document d = _index.getDoc(did);
 		//Vector < String > dv = d.get_title_vector();
 		Vector < String > dv = d.get_body_vector();
-		// Score the document. Here we have provided a very simple ranking model,
+		// yScore the document. Here we have provided a very simple ranking model,
 		// where a document is scored 1.0 if it gets hit by at least one query term
 		//System.out.println("the length of query is" + dv.size());
-		// This will create the integer query vector
+		// This will create the integer quer vector
 		for(String queryWord : qv){
 			if(dv.contains(queryWord))
 			{
@@ -59,7 +59,7 @@ public class RankerCosine extends Ranker {
 			   documentMap.put(word, 1.0);
 		   }
 		}
-		
+	
 		//to calculate the double document vector
 		for (String key : documentMap.keySet()){
 			// This will calulate idf with the formula given on page 11
