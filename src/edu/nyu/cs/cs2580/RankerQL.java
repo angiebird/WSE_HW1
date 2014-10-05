@@ -43,6 +43,10 @@ public class RankerQL extends Ranker {
             score += Math.log((1-lambda)*pqd + lambda*pqc);
 		}
 
+        if(qv.size() > 0){
+            score = Math.pow(Math.E, score);
+        }
+
 		return new ScoredDocument(did, d.get_title_string(), score);
 	}
 
