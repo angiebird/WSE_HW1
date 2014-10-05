@@ -32,22 +32,17 @@ public class RankerCosine extends Ranker {
 			qv.add(term);
 			//System.out.println("term is " + term);
 		}
-		//System.out.println("the length of query is" + qv.size());
 		// Get the document vector. For hw1, you don't have to worry about the
 		// details of how index works.
 		Document d = _index.getDoc(did);
-		//Vector < String > dv = d.get_title_vector();
 		Vector < String > dv = d.get_body_vector();
-		// Score the document. Here we have provided a very simple ranking model,
-		// where a document is scored 1.0 if it gets hit by at least one query term
-		//System.out.println("the length of query is" + dv.size());
+
 		// This will create the integer query vector
 		for(String queryWord : qv){
-			if(dv.contains(queryWord))
+            if(Document.termFrequency(queryWord) > 0)
 			{
 				queryMap.put(queryWord,1);
 			}
-			
 		}
 
 		// count how many times a word occurs in a document ie tf that will be used to calculate tf.idf
@@ -68,17 +63,22 @@ public class RankerCosine extends Ranker {
 			documentMap.put(key, tfidf);
 		}
 		// to calculate score by cosine similiarity
-			for (String key: documentMap.keySet()){
-			    normA += Math.pow(documentMap.get(key), 2);
-				if(queryMap.containsKey(key)){
-					dotProduct += documentMap.get(key) * queryMap.get(key);
-					normB += Math.pow(queryMap.get(key), 2);
-				}
+		for (String key: documentMap.keySet()){
+		    normA += Math.pow(documentMap.get(key), 2);
+			if(queryMap.containsKey(key)){
+				dotProduct += documentMap.get(key) * queryMap.get(key);
 			}
-			if((Math.sqrt(normA) * Math.sqrt(normB)) > 1)
-				score = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-		//System.out.println("score is" + score + " title is " + d.get_title_string());
-		
+		}
+
+        for(String key: queryMap.keySet()){
+		    normB += Math.pow(queryMap.get(key), 2);
+        }
+
+		if((queryMap.size() * documentMap.size() > 0))
+		    score = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        else
+            score = 0;
+
 		return new ScoredDocument(did, d.get_title_string(), score);
 	}
 
