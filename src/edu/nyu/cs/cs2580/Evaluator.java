@@ -121,6 +121,12 @@ public abstract class Evaluator {
 
     eval = new EvaluatorFMeasure(0.5, 10);
     score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    EvaluatorPrecisionRecall eval2 = new EvaluatorPrecisionRecall();
+    ArrayList<Double> precisionLs = eval2.evaluate2(query, query_revelance, query_rank);
+    for(int i = 0; i < precisionLs.size(); i++){
+        score.add(precisionLs.get(i));
+    }
     
     eval = new EvaluatorAvgPrecision();
     score.add(eval.evaluate(query, query_revelance, query_rank));
@@ -156,7 +162,7 @@ public abstract class Evaluator {
     */
     for(int i = 0; i < score.size(); i++){
         if(i!=0)
-            System.out.print(" " + score.get(i));
+            System.out.print("\t" + score.get(i));
         else
             System.out.print(score.get(i));
     }
