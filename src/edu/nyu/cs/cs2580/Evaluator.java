@@ -93,7 +93,9 @@ public abstract class Evaluator {
     // Add your evaluator here
     ArrayList< Double > score = new ArrayList<Double>();
     
-    Evaluator eval = new EvaluatorPrecision(1);
+    Evaluator eval;
+
+    eval = new EvaluatorPrecision(1);
     score.add(eval.evaluate(query, query_revelance, query_rank));
     
     eval = new EvaluatorPrecision(5);
@@ -110,8 +112,17 @@ public abstract class Evaluator {
 
     eval = new EvaluatorRecall(10);
     score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorFMeasure(0.5, 1);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorFMeasure(0.5, 5);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorFMeasure(0.5, 10);
+    score.add(eval.evaluate(query, query_revelance, query_rank));
     
-     eval = new EvaluatorAvgPrecision();
+    eval = new EvaluatorAvgPrecision();
     score.add(eval.evaluate(query, query_revelance, query_rank));
 
     eval = new EvaluatorNDCG(1);

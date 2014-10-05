@@ -25,7 +25,7 @@ public class EvaluatorRecall extends Evaluator{
         double RR = 0.0;
         double R = 0.0;
        
-        for(int i = 0; i <= K; i++){
+        for(int i = 0; i < query_rank.size(); i++){
             ScoredDocument doc = query_rank.get(i);
             if(query_relevance.containsKey(doc._did)){
                 double rel = query_relevance.get(doc._did);
@@ -35,7 +35,12 @@ public class EvaluatorRecall extends Evaluator{
                 if(rel >= 5.0) R++;
             }
         }
-        recall = RR / R;
+        if(R == 0.0){
+            recall = 0;
+        }
+        else{
+            recall = RR / R;
+        }
         return recall;
     }
 }

@@ -20,7 +20,7 @@ public class EvaluatorPrecision extends Evaluator{
     	
         double precision = 0.0;
         double RR = 0.0;
-        for(int i = 0; i <= K; i++){
+        for(int i = 0; i < K; i++){
             ScoredDocument doc = query_rank.get(i);
             if(query_relevance.containsKey(doc._did)){
                 RR ++;
