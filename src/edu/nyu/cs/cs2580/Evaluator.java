@@ -139,6 +139,9 @@ public abstract class Evaluator {
 
     eval = new EvaluatorNDCG(10);
     score.add(eval.evaluate(query, query_revelance, query_rank));
+
+    eval = new EvaluatorReciprocalRank();
+    score.add(eval.evaluate(query, query_revelance, query_rank));
     
     
     
