@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class EvaluatorAvgPrecision extends Evaluator{
     @Override
     public double evaluate( String query,
-        HashMap < Integer , Double > query_revelance,
+        HashMap < Integer , Double > query_relevance,
         ArrayList<ScoredDocument > query_rank){
         Iterator<ScoredDocument> it = query_rank.iterator();
         double RR = 0.0;
@@ -18,9 +18,12 @@ public class EvaluatorAvgPrecision extends Evaluator{
         while(it.hasNext()){
             i++;
             ScoredDocument doc = it.next();
-            if(query_revelance.containsKey(doc._did)){
-                RR += 1;
-                AP += RR/i;
+            if(query_relevance.containsKey(doc._did)){
+                double rel = query_relevance.get(doc._did);
+                if (rel >= 5.0){
+                    RR += 1;
+                    AP += RR/i;
+                }
             }
         }
         AP = AP/RR;
