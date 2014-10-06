@@ -146,7 +146,6 @@ class QueryHandler implements HttpHandler {
     private String logTextResponse(){
         StringBuilder sb = new StringBuilder();
         Vector<Logger> logs = Logger.getAllLog();
-        System.out.println("logs size: " + logs.size());
         for(int i = 0; i < logs.size(); i++){
             Logger lg = logs.get(i);
             sb.append(lg._sid);

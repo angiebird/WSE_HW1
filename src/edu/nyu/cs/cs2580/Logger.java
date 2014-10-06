@@ -23,7 +23,7 @@ class Logger{
     }
 
     public static void addLog(int _sid, String _query, int _did, String _action){
-        System.out.println("add log: " + _sid +" " + _query +" "+ _did +" "+_action);
+        //System.out.println("add log: " + _sid +" " + _query +" "+ _did +" "+_action);
         Logger log = new Logger(_sid, _query, _did, _action);
         if(_logs.containsKey(_sid) == false){
             _logs.put(_sid, new Vector<Logger>());
