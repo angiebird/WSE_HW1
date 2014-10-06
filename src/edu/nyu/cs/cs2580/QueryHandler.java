@@ -50,6 +50,7 @@ class QueryHandler implements HttpHandler {
 		System.out.println("uriQuery: " + uriQuery);
 		System.out.println("uriPath: " + uriPath);
 		String query = "";
+        String format = "text/plain";
 
 		if ((uriPath != null) && (uriQuery != null)){
 			if (uriPath.equals("/search")){
@@ -73,56 +74,44 @@ class QueryHandler implements HttpHandler {
 						} else if (ranker_type.equals("linear")){
 							_ranker = Ranker.Factory.getRankerByParameter(RankerType.LINEAR, _indexer);
 						} else {
-							queryResponse = (ranker_type+" not implemented.");
+						    _ranker = Ranker.Factory.getRankerByParameter(RankerType.NONE, _indexer);
 						}
 					}
-					// When no ranker is specified use RankerType = NONE and use professors simple parser
 					else {
-						// @CS2580: The following is instructor's simple ranker that does not
-						// use the Ranker class.
 						_ranker = Ranker.Factory.getRankerByParameter(RankerType.NONE, _indexer);
 					}
+		            // Getting the results of Ranking
+		            Vector<ScoredDocument> scoredDocuments = _ranker.runQuery(query);
+
+                    if(keys.contains("format") && query_map.get("format").equals("html")){
+		                queryResponse = searchHtmlResponse(scoredDocuments, queryResponse,query);
+                        format = "text/html";
+                    }
+                    else{
+		                // check if return type is necessary. 
+		                queryResponse = searchTextResponse(scoredDocuments, queryResponse,query);
+                    }
 				}
-				// When the query is null. Think what will _ranker be initialized to
-				/*else{
-					queryResponse =  "No query is given!";
-				}*/
+                else{
+                    // no query 
+                }
 			}
-
-			// when the uriPath is other than /search
-			/*else{
-				queryResponse = "Only search is handled";
-			}*/
 		}
-		// Called when uriPath and uriQuery are null
-		/*else{
-			queryResponse = "The URI is not correct";
-		}*/
 
-		// Getting the results of Ranking
-		Vector<ScoredDocument> scoredDocuments = _ranker.runQuery(query);
-		
-		// check if return type is necessary. 
-		 queryResponse = createResponse(scoredDocuments, queryResponse,query);
         
 		// Construct a simple response.
 		Headers responseHeaders = exchange.getResponseHeaders();
-		responseHeaders.set("Content-Type", "text/plain");
+		responseHeaders.set("Content-Type", format);
 		exchange.sendResponseHeaders(200, 0);  // arbitrary number of bytes
 		OutputStream responseBody = exchange.getResponseBody();
 		responseBody.write(queryResponse.getBytes());
 		responseBody.close();
 	}
 
-	private String createResponse(Vector<ScoredDocument> scoredDocuments, String queryResponse, String query){
+	private String searchTextResponse(Vector<ScoredDocument> scoredDocuments, String queryResponse, String query){
 		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
 		while(itr.hasNext()){
 			ScoredDocument sd = itr.next();
-            /*
-			if (queryResponse.length() > 0){
-				queryResponse = queryResponse + "\n";
-			}
-            */
 			queryResponse = queryResponse + query + "\t" + sd.asString();
 			if (queryResponse.length() > 0){
 				queryResponse = queryResponse + "\n";
@@ -130,4 +119,18 @@ class QueryHandler implements HttpHandler {
 		}
 		return queryResponse;
 	}
+	private String searchHtmlResponse(Vector<ScoredDocument> scoredDocuments, String queryResponse, String query){
+        StringBuilder sb = new StringBuilder();
+        sb.append(queryResponse);
+		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
+		while(itr.hasNext()){
+			ScoredDocument sd = itr.next();
+            sb.append("<a href=\"");
+            sb.append("");
+            sb.append("\">");
+            sb.append(sd._title);
+            sb.append("</a><br>\n");
+        }
+        return sb.toString();
+    }
 }
