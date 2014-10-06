@@ -23,14 +23,17 @@ public class EvaluatorPrecision extends Evaluator{
         for(int i = 0; i < K; i++){
             ScoredDocument doc = query_rank.get(i);
             if(query_relevance.containsKey(doc._did)){
-                RR ++;
+                double rel = query_relevance.get(doc._did);
+                if (rel >= 5.0){
+                    RR ++;
+                }
             }
         }
         
         if (K != 0)
             precision = RR / K;
         else
-            precision = 1.0;
+            precision = 0.0;
         return precision;
     }
 }
