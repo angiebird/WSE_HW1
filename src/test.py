@@ -17,9 +17,9 @@ def main(argv):
         line = qf.readline()
 
     ranker_list = ["cosine", "QL", "phrase", "numviews", "linear"]
-    ranker_files = ['hw1.1-vsm.tsv', 'hw1.1-ql.tsv', 'hw1.1-phrase.tsv', 'hw1.1-numviews', 'hw1.2-linear.tsv']
+    ranker_files = ['hw1.1-vsm.tsv', 'hw1.1-ql.tsv', 'hw1.1-phrase.tsv', 'hw1.1-numviews.tsv', 'hw1.2-linear.tsv']
 
-    eval_files = ['hw1.3-vsm.tsv', 'hw1.3-ql.tsv', 'hw1.3-phrase.tsv', 'hw1.3-numviews', 'hw1.3-linear.tsv']
+    eval_files = ['hw1.3-vsm.tsv', 'hw1.3-ql.tsv', 'hw1.3-phrase.tsv', 'hw1.3-numviews.tsv', 'hw1.3-linear.tsv']
 
     for ri, r in enumerate(ranker_list):
         rf = ranker_files[ri];
