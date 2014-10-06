@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class EvaluatorReciprocalRank extends Evaluator{
     @Override
     public double evaluate( String query,
-        HashMap < Integer , Double > query_revelance,
+        HashMap < Integer , Double > query_relevance,
         ArrayList<ScoredDocument > query_rank){
         Iterator<ScoredDocument> it = query_rank.iterator();
         
@@ -18,7 +18,10 @@ public class EvaluatorReciprocalRank extends Evaluator{
             i++;
             ScoredDocument doc = it.next();
             if(query_revelance.containsKey(doc._did)){
-                break;
+                double rel = query_relevance.get(doc._did);
+                if (rel >= 5.0){
+                    break;
+                }
             }
         }
         return 1/i;
