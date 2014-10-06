@@ -34,6 +34,14 @@ public abstract class Ranker{
 	}
 
 	public abstract  ScoredDocument runquery(String query, int did);
+
+    // A normalize function map [0 inf] to [0 1]
+    // where normalize(inf) = 1 and normalize(0) = 0
+    public double normalize(double in){
+        double out = 1 - Math.pow(Math.E, -in);
+        return out;
+    }
+
 	/**
 	 * A Factory class that will return the Ranker object according to the parameter
 	 * @author bdawada

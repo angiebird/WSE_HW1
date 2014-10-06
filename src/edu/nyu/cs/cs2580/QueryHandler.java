@@ -47,8 +47,8 @@ class QueryHandler implements HttpHandler {
 		String queryResponse = "";  
 		String uriQuery = exchange.getRequestURI().getQuery();
 		String uriPath = exchange.getRequestURI().getPath();
-		System.out.println("uriQuery" + uriQuery);
-		System.out.println("uriPath" + uriPath);
+		System.out.println("uriQuery: " + uriQuery);
+		System.out.println("uriPath: " + uriPath);
 		String query = "";
 
 		if ((uriPath != null) && (uriQuery != null)){
