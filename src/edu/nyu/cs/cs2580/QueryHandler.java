@@ -108,8 +108,11 @@ class QueryHandler implements HttpHandler {
             else if (uriPath.equals("/click")){
 				Map<String,String> query_map = getQueryMap(uriQuery);
 				Set<String> keys = query_map.keySet();
-                if(keys.contains("did")){
+                if(keys.contains("sid") && keys.contains("did") && keys.contains("query")){
+                    int sid = Integer.parseInt(query_map.get("sid"));
                     int did = Integer.parseInt(query_map.get("did"));
+                    query = query_map.get("query");
+                    Logger.addLog(sid, query, did, "click");
                     queryResponse = clickHtmlResponse(did);
                     format = "text/html";
                 }
@@ -167,12 +170,21 @@ class QueryHandler implements HttpHandler {
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html><html><head></head><body>");
         sb.append(queryResponse);
+        int sid = Logger.getSid();
 		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
 		while(itr.hasNext()){
 			ScoredDocument sd = itr.next();
             sb.append("<a href=\"");
+
             sb.append("/click?did=");
             sb.append(sd._did);
+
+            sb.append("&sid=");
+            sb.append(sid);
+
+            sb.append("&query=");
+            sb.append(query);
+
             sb.append("\">");
             sb.append(sd._title);
             sb.append("</a><br>\n");
