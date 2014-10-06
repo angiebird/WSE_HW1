@@ -13,7 +13,7 @@ public class EvaluatorReciprocalRank extends Evaluator{
         ArrayList<ScoredDocument > query_rank){
         Iterator<ScoredDocument> it = query_rank.iterator();
         
-        int i = 0;
+        double i = 0;
         while(it.hasNext()){
             i++;
             ScoredDocument doc = it.next();
@@ -24,6 +24,6 @@ public class EvaluatorReciprocalRank extends Evaluator{
                 }
             }
         }
-        return 1/i;
+        return 1.0/i;
     }
 }
