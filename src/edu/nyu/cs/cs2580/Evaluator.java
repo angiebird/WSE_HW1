@@ -72,7 +72,7 @@ public abstract class Evaluator {
   }
 
   public abstract double evaluate( String query,
-    HashMap < Integer , Double > query_revelance,
+    HashMap < Integer , Double > query_relevance,
     ArrayList<ScoredDocument > query_rank);
 
   public static void evaluateStdin(
@@ -87,7 +87,7 @@ public abstract class Evaluator {
         break;
     }
     
-    HashMap < Integer , Double > query_revelance = relevance_judgments.get(query);
+    HashMap < Integer , Double > query_relevance = relevance_judgments.get(query);
     ArrayList< ScoredDocument > query_rank = rank_result.get(query);
 
     // Add your evaluator here
@@ -96,52 +96,52 @@ public abstract class Evaluator {
     Evaluator eval;
 
     eval = new EvaluatorPrecision(1);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
     
     eval = new EvaluatorPrecision(5);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
     
     eval = new EvaluatorPrecision(10);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorRecall(1);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorRecall(5);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorRecall(10);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorFMeasure(0.5, 1);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorFMeasure(0.5, 5);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorFMeasure(0.5, 10);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     EvaluatorPrecisionRecall eval2 = new EvaluatorPrecisionRecall();
-    ArrayList<Double> precisionLs = eval2.evaluate2(query, query_revelance, query_rank);
+    ArrayList<Double> precisionLs = eval2.evaluate2(query, query_relevance, query_rank);
     for(int i = 0; i < precisionLs.size(); i++){
         score.add(precisionLs.get(i));
     }
     
     eval = new EvaluatorAvgPrecision();
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorNDCG(1);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorNDCG(5);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorNDCG(10);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorReciprocalRank();
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
     
     
     
@@ -150,16 +150,16 @@ public abstract class Evaluator {
     For example:
     
     eval = new EvaluatorPrecision(1);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
     
     eval = new EvaluatorPrecision(5);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
     
     eval = new EvaluatorPrecision(10);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     eval = new EvaluatorRecall(1);
-    score.add(eval.evaluate(query, query_revelance, query_rank));
+    score.add(eval.evaluate(query, query_relevance, query_rank));
 
     ...
     */

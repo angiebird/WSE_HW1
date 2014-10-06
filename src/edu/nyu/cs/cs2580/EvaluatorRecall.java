@@ -45,19 +45,3 @@ public class EvaluatorRecall extends Evaluator{
     }
 }
 
-/*
- double recall = 0.0; 
-        double RR = 0.0;
-        double R = 0.0;
-        
-        for(int i = 0; i < K ; i++){
-        ScoredDocument doc = query_rank.get(i);
-        if(query_relevance.containsKeys(doc._did){
-          RR = RR + 1;
-        }
-        }
-        
-        R = count all relevance documents in query_relevance
-        
-        return RR/R;
- */

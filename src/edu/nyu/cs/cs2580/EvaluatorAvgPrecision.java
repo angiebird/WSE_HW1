@@ -26,7 +26,8 @@ public class EvaluatorAvgPrecision extends Evaluator{
                 }
             }
         }
-        AP = AP/RR;
+        if(RR > 0)
+            AP = AP/RR;
         return AP;
     }
 }
