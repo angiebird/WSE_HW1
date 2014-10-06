@@ -96,6 +96,15 @@ class QueryHandler implements HttpHandler {
                     // no query 
                 }
 			}
+            else if (uriPath.equals("/result")){
+				Map<String,String> query_map = getQueryMap(uriQuery);
+				Set<String> keys = query_map.keySet();
+                if(keys.contains("did")){
+                    int did = Integer.parseInt(query_map.get("did"));
+                    queryResponse = resultHtmlResponse(did);
+                    format = "text/html";
+                }
+            }
 		}
 
         
@@ -107,6 +116,20 @@ class QueryHandler implements HttpHandler {
 		responseBody.write(queryResponse.getBytes());
 		responseBody.close();
 	}
+
+    private String resultHtmlResponse(int did){
+        Document doc = _indexer.getDoc(did);
+        StringBuilder sb = new StringBuilder();
+        if(doc != null){
+            sb.append("<!DOCTYPE html><html><head></head><body>");
+            sb.append("<h1>");
+            sb.append(doc.get_title_string());
+            sb.append("</h1><br>");
+            sb.append(doc.get_body_string());
+            sb.append("</body></html>");
+        }
+        return sb.toString();
+    }
 
 	private String searchTextResponse(Vector<ScoredDocument> scoredDocuments, String queryResponse, String query){
 		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
