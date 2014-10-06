@@ -17,7 +17,7 @@ public class EvaluatorReciprocalRank extends Evaluator{
         while(it.hasNext()){
             i++;
             ScoredDocument doc = it.next();
-            if(query_revelance.containsKey(doc._did)){
+            if(query_relevance.containsKey(doc._did)){
                 double rel = query_relevance.get(doc._did);
                 if (rel >= 5.0){
                     break;
