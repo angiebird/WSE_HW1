@@ -125,13 +125,17 @@ class QueryHandler implements HttpHandler {
 
         
 		// Construct a simple response.
+        sendResponse(exchange, new Response(format, queryResponse));
+	}
+
+    private void sendResponse(HttpExchange exchange, Response rp) throws IOException{
 		Headers responseHeaders = exchange.getResponseHeaders();
-		responseHeaders.set("Content-Type", format);
+		responseHeaders.set("Content-Type", rp.format);
 		exchange.sendResponseHeaders(200, 0);  // arbitrary number of bytes
 		OutputStream responseBody = exchange.getResponseBody();
-		responseBody.write(queryResponse.getBytes());
+		responseBody.write(rp.response.getBytes());
 		responseBody.close();
-	}
+    }
 
     private String logTextResponse(){
         StringBuilder sb = new StringBuilder();
@@ -215,5 +219,14 @@ class QueryHandler implements HttpHandler {
         }
         sb.append("</body></html>");
         return sb.toString();
+    }
+}
+
+class Response{
+    public String format;
+    public String response;
+    public Response(String format, String response){
+        this.format = format;
+        this.response = response;
     }
 }
