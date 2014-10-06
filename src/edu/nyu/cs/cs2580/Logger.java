@@ -8,11 +8,11 @@ class Logger{
     private static HashMap <Integer, Vector<Logger>> _logs = new HashMap <Integer, Vector<Logger>>();
     private static int _currSid = 0;
 
-    private int _sid;
-    private int _did;
-    private String _query;
-    private String _action;
-    private Date _time;
+    public int _sid;
+    public int _did;
+    public String _query;
+    public String _action;
+    public Date _time;
 
     public Logger(int _sid, String _query, int _did, String _action){
         this._sid = _sid;

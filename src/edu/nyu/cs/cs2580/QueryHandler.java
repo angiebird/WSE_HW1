@@ -117,6 +117,10 @@ class QueryHandler implements HttpHandler {
                     format = "text/html";
                 }
             }
+            else if (uriPath.equals("/log")){
+                queryResponse = logTextResponse();
+                format = "text/plain";
+            }
 		}
 
         
@@ -128,6 +132,26 @@ class QueryHandler implements HttpHandler {
 		responseBody.write(queryResponse.getBytes());
 		responseBody.close();
 	}
+
+    private String logTextResponse(){
+        StringBuilder sb = new StringBuilder();
+        Vector<Logger> logs = Logger.getAllLog();
+        System.out.println("logs size: " + logs.size());
+        for(int i = 0; i < logs.size(); i++){
+            Logger lg = logs.get(i);
+            sb.append(lg._sid);
+            sb.append("\t");
+            sb.append(lg._query);
+            sb.append("\t");
+            sb.append(lg._did);
+            sb.append("\t");
+            sb.append(lg._action);
+            sb.append("\t");
+            sb.append(lg._time);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 
     private String resultHtmlResponse(int did){
         Document doc = _indexer.getDoc(did);
