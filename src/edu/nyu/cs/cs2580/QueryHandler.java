@@ -105,6 +105,15 @@ class QueryHandler implements HttpHandler {
                     format = "text/html";
                 }
             }
+            else if (uriPath.equals("/click")){
+				Map<String,String> query_map = getQueryMap(uriQuery);
+				Set<String> keys = query_map.keySet();
+                if(keys.contains("did")){
+                    int did = Integer.parseInt(query_map.get("did"));
+                    queryResponse = clickHtmlResponse(did);
+                    format = "text/html";
+                }
+            }
 		}
 
         
@@ -130,7 +139,19 @@ class QueryHandler implements HttpHandler {
         }
         return sb.toString();
     }
-
+    private String clickHtmlResponse(int did){
+        Document doc = _indexer.getDoc(did);
+        StringBuilder sb = new StringBuilder();
+		if(doc != null){
+            sb.append("<!DOCTYPE html><html><head>");
+            sb.append("<meta http-equiv=\"refresh\" content=\"0;URL='");
+            sb.append("/result?did=");
+            sb.append(doc._docid);
+            sb.append("'\"/>");
+            sb.append("</head><body></body></html>");
+        }
+        return sb.toString();
+    }
 	private String searchTextResponse(Vector<ScoredDocument> scoredDocuments, String queryResponse, String query){
 		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
 		while(itr.hasNext()){
@@ -144,16 +165,19 @@ class QueryHandler implements HttpHandler {
 	}
 	private String searchHtmlResponse(Vector<ScoredDocument> scoredDocuments, String queryResponse, String query){
         StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><head></head><body>");
         sb.append(queryResponse);
 		Iterator<ScoredDocument> itr = scoredDocuments.iterator();
 		while(itr.hasNext()){
 			ScoredDocument sd = itr.next();
             sb.append("<a href=\"");
-            sb.append("");
+            sb.append("/click?did=");
+            sb.append(sd._did);
             sb.append("\">");
             sb.append(sd._title);
             sb.append("</a><br>\n");
         }
+        sb.append("</body></html>");
         return sb.toString();
     }
 }
