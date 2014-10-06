@@ -52,69 +52,75 @@ class QueryHandler implements HttpHandler {
 		String query = "";
         String format = "text/plain";
 
-		if ((uriPath != null) && (uriQuery != null)){
+		if ((uriPath != null)){
 			if (uriPath.equals("/search")){
-				Map<String,String> query_map = getQueryMap(uriQuery);
-				Set<String> keys = query_map.keySet();
-				if (keys.contains("query")){
-					query = query_map.get("query");
-					if (keys.contains("ranker")){
-						// This will get the string t
-						String ranker_type = query_map.get("ranker");
-						// @CS2580: Invoke different ranking functions inside your
-						// implementation of the Ranker class.
-						if (ranker_type.equals("cosine")){
-							_ranker = Ranker.Factory.getRankerByParameter(RankerType.COSINE, _indexer);
-						} else if (ranker_type.equals("QL")){
-							_ranker = Ranker.Factory.getRankerByParameter(RankerType.QL, _indexer);
-						} else if (ranker_type.equals("phrase")){
-							_ranker = Ranker.Factory.getRankerByParameter(RankerType.PHRASE, _indexer);
-						} else if (ranker_type.equals("numviews")){
-							_ranker = Ranker.Factory.getRankerByParameter(RankerType.NUMVIEWS, _indexer);
-						} else if (ranker_type.equals("linear")){
-							_ranker = Ranker.Factory.getRankerByParameter(RankerType.LINEAR, _indexer);
-						} else {
-						    _ranker = Ranker.Factory.getRankerByParameter(RankerType.NONE, _indexer);
-						}
-					}
-					else {
-						_ranker = Ranker.Factory.getRankerByParameter(RankerType.NONE, _indexer);
-					}
-		            // Getting the results of Ranking
-		            Vector<ScoredDocument> scoredDocuments = _ranker.runQuery(query);
+                if(uriQuery != null){
+				    Map<String,String> query_map = getQueryMap(uriQuery);
+				    Set<String> keys = query_map.keySet();
+				    if (keys.contains("query")){
+				    	query = query_map.get("query");
+				    	if (keys.contains("ranker")){
+				    		// This will get the string t
+				    		String ranker_type = query_map.get("ranker");
+				    		// @CS2580: Invoke different ranking functions inside your
+				    		// implementation of the Ranker class.
+				    		if (ranker_type.equals("cosine")){
+				    			_ranker = Ranker.Factory.getRankerByParameter(RankerType.COSINE, _indexer);
+				    		} else if (ranker_type.equals("QL")){
+				    			_ranker = Ranker.Factory.getRankerByParameter(RankerType.QL, _indexer);
+				    		} else if (ranker_type.equals("phrase")){
+				    			_ranker = Ranker.Factory.getRankerByParameter(RankerType.PHRASE, _indexer);
+				    		} else if (ranker_type.equals("numviews")){
+				    			_ranker = Ranker.Factory.getRankerByParameter(RankerType.NUMVIEWS, _indexer);
+				    		} else if (ranker_type.equals("linear")){
+				    			_ranker = Ranker.Factory.getRankerByParameter(RankerType.LINEAR, _indexer);
+				    		} else {
+				    		    _ranker = Ranker.Factory.getRankerByParameter(RankerType.NONE, _indexer);
+				    		}
+				    	}
+				    	else {
+				    		_ranker = Ranker.Factory.getRankerByParameter(RankerType.NONE, _indexer);
+				    	}
+		                // Getting the results of Ranking
+		                Vector<ScoredDocument> scoredDocuments = _ranker.runQuery(query);
 
-                    if(keys.contains("format") && query_map.get("format").equals("html")){
-		                queryResponse = searchHtmlResponse(scoredDocuments, queryResponse,query);
-                        format = "text/html";
-                    }
+                        if(keys.contains("format") && query_map.get("format").equals("html")){
+		                    queryResponse = searchHtmlResponse(scoredDocuments, queryResponse,query);
+                            format = "text/html";
+                        }
+                        else{
+		                    // check if return type is necessary. 
+		                    queryResponse = searchTextResponse(scoredDocuments, queryResponse,query);
+                        }
+				    }
                     else{
-		                // check if return type is necessary. 
-		                queryResponse = searchTextResponse(scoredDocuments, queryResponse,query);
+                        // no query 
                     }
-				}
-                else{
-                    // no query 
                 }
 			}
             else if (uriPath.equals("/result")){
-				Map<String,String> query_map = getQueryMap(uriQuery);
-				Set<String> keys = query_map.keySet();
-                if(keys.contains("did")){
-                    int did = Integer.parseInt(query_map.get("did"));
-                    queryResponse = resultHtmlResponse(did);
-                    format = "text/html";
+                if(uriQuery != null){
+				    Map<String,String> query_map = getQueryMap(uriQuery);
+				    Set<String> keys = query_map.keySet();
+                    if(keys.contains("did")){
+                        int did = Integer.parseInt(query_map.get("did"));
+                        queryResponse = resultHtmlResponse(did);
+                        format = "text/html";
+                    }
                 }
             }
             else if (uriPath.equals("/click")){
-				Map<String,String> query_map = getQueryMap(uriQuery);
-				Set<String> keys = query_map.keySet();
-                if(keys.contains("sid") && keys.contains("did") && keys.contains("query")){
-                    int sid = Integer.parseInt(query_map.get("sid"));
-                    int did = Integer.parseInt(query_map.get("did"));
-                    query = query_map.get("query");
-                    Logger.addLog(sid, query, did, "click");
-                    queryResponse = clickHtmlResponse(did);
-                    format = "text/html";
+                if(uriQuery != null){
+				    Map<String,String> query_map = getQueryMap(uriQuery);
+				    Set<String> keys = query_map.keySet();
+                    if(keys.contains("sid") && keys.contains("did") && keys.contains("query")){
+                        int sid = Integer.parseInt(query_map.get("sid"));
+                        int did = Integer.parseInt(query_map.get("did"));
+                        query = query_map.get("query");
+                        Logger.addLog(sid, query, did, "click");
+                        queryResponse = clickHtmlResponse(did);
+                        format = "text/html";
+                    }
                 }
             }
             else if (uriPath.equals("/log")){
